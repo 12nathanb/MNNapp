@@ -1,27 +1,27 @@
 package com.example.japanesestudy2.ui.vocab
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.example.japanesestudy2.data.MNNVocabDatabase
-import com.example.japanesestudy2.data.VocabItemAdapter
+import com.example.japanesestudy2.data.MNNItems
+import com.example.japanesestudy2.data.MNNVocab
 import com.example.japanesestudy2.databinding.FragmentVocabBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class VocabFragment : Fragment() {
 
     private var _binding: FragmentVocabBinding? = null
-    lateinit var viewModel: VocabViewModel
+    private val viewModel by viewModels<VocabViewModel>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -32,13 +32,9 @@ class VocabFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this).get(VocabViewModel::class.java)
-
         _binding = FragmentVocabBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,18 +43,30 @@ class VocabFragment : Fragment() {
         binding.vocabList.layoutManager = LinearLayoutManager(requireContext())
         binding.vocabList.adapter = viewModel.adapter
 
-        var db = Room.databaseBuilder(
-            requireContext(),
-            MNNVocabDatabase::class.java,
-            "vocab_database3"
-        ).createFromAsset("database/vocab.db").build()
+        binding.vocabSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.searchList(newText)
+                viewModel.adapter.notifyDataSetChanged()
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean = false
+        })
+
+
 
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.vocabList.clear()
-            viewModel.vocabList.addAll( db.mnnVocabDao().readAll())
+            viewModel.vocabList.addAll(viewModel.vocabDatabase.mnnVocabDao().readAllVocab().map { MNNItems(it.kanji, it.hiragana, it.english, it.lesson) })
+            viewModel.adjList.addAll(viewModel.vocabDatabase.mnnVocabDao().readAllAdjs().map { MNNItems(it.kanji, it.hiragana, it.english, it.lesson) })
+            viewModel.verbList.addAll(viewModel.vocabDatabase.mnnVocabDao().readAllVerb().map { MNNItems(it.kanji, it.hiragana, it.english, it.lesson) })
+
+            viewModel.allList.addAll(viewModel.vocabList)
+            viewModel.allList.addAll(viewModel.adjList)
+            viewModel.allList.addAll(viewModel.verbList)
+
+            viewModel.setAdapterData(viewModel.vocabList.sortedBy { it.english })
 
             withContext(Dispatchers.Main) {
-                Log.println(Log.DEBUG, "db", viewModel.vocabList.size.toString())
                 viewModel.adapter.notifyDataSetChanged()
             }
 

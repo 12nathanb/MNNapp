@@ -4,48 +4,53 @@
     android:gravity="center_vertical"
     android:orientation="vertical">
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/english"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="ENGLISH"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+
+
+    <TextView
+        android:id="@+id/kanji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="KANJI"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/hiragana"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+
+        android:layout_marginEnd="8dp"
+        android:text="HIRAGANA"
+        android:textSize="20dp" />
+
+
+    <ImageButton
+        android:id="@+id/tts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/baseline_play_arrow_24" />
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/english"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="ENGLISH"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-        <ImageButton
-            android:background="@drawable/baseline_play_arrow_24"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/kanji"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="KANJI"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-        <TextView
-            android:id="@+id/hiragana"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="HIRAGANA"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-    </LinearLayout>
+        android:layout_gravity="center" />
 
 
 </LinearLayout>

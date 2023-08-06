@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <SearchView
         android:id="@+id/vocab_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:iconifiedByDefault="false"
+        app:layout_constraintBottom_toTopOf="@id/vocab_list"
+        app:layout_constraintEnd_toStartOf="@+id/vocab_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/vocab_spinner"
+        android:background="@drawable/baseline_filter_list_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vocab_search"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vocab_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/vocab_item"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/vocab_search"
+        tools:listitem="@layout/vocab_item" />
+</androidx.constraintlayout.widget.ConstraintLayout>
